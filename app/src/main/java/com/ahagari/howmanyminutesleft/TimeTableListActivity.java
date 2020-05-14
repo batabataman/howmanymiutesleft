@@ -93,10 +93,26 @@ public class TimeTableListActivity extends AppCompatActivity implements View.OnC
             e.printStackTrace();
         }
 
+        displayTimeTableList(fileList);
+        backButton.setOnClickListener(this);
+        //listView.setEnabled(false);
+    }
+
+
+    private void displayTimeTableList(ArrayList<String>fileList) {
+
         int startIndex =0;
         int j=0;
         timeTableAfterList = new ArrayList<String>();
         afterViewList = new ArrayList<CustomListData>();
+
+        // 時刻取得
+        Calendar cal = Calendar.getInstance();
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minutes = cal.get(Calendar.MINUTE);
+        int second = cal.get(Calendar.SECOND);
+        long nowJikoku = hour * 3600 + minutes * 60 + second;
+
         for( int i=0; i < fileList.size(); i++){
             String strTmp = fileList.get(i);
             String[] lineArray = strTmp.split(",");
@@ -113,13 +129,17 @@ public class TimeTableListActivity extends AppCompatActivity implements View.OnC
                 break;
             }
             long  longTmp = stationTime - nowJikoku;
-            long dispHour = longTmp / 60 / 60;
-            long dispMinute = (longTmp % 3600) / 60;
+            long dispHour = longTmp / 60L / 60L;
+            long dispMinute = (longTmp % 3600L) / 60L;
+            long dispSecond = longTmp % 60L;
             String dispLeftTime;
             if(dispHour > 0) {
                 dispLeftTime = String.format("あと%s時間%s分", String.valueOf(dispHour), String.valueOf(dispMinute));
-            } else {
+            } else if(dispMinute > 0){
                 dispLeftTime = String.format("あと%s分", String.valueOf(dispMinute));
+            } else {
+                dispLeftTime = String.format("あと%s秒", String.valueOf(dispSecond));
+
             }
             timeTableAfterList.add(String.format("%s時%s分\n%s\n%s %s",
                     lineArray[0], lineArray[1], dispLeftTime, lineArray[3].equals("null") ? "" : lineArray[3] , lineArray[4]));
@@ -171,7 +191,7 @@ public class TimeTableListActivity extends AppCompatActivity implements View.OnC
             if(dispHour > 0) {
                 dispPastTime = String.format("%s時間%s分前", String.valueOf(dispHour), String.valueOf(dispMinute));
             } else {
-                dispPastTime = String.format("%s分前", String.valueOf(dispMinute));
+                dispPastTime = String.format("%s分過ぎ", String.valueOf(dispMinute));
             }
 
             timeTableBeforeList.add(String.format("%s時%s分\n%s\n%s %s",
@@ -187,6 +207,7 @@ public class TimeTableListActivity extends AppCompatActivity implements View.OnC
             beforeViewList.add(customItem);
         }
 
+        // TODO 表示方法変更したので、デバッグ後削除する
         timeTableList = new ArrayList<String>();
         timeTableList.addAll(timeTableBeforeList);
         timeTableList.addAll(timeTableAfterList);
@@ -206,11 +227,7 @@ public class TimeTableListActivity extends AppCompatActivity implements View.OnC
         if(beforeViewList != null || beforeViewList.size() > 1) {
             listView.setSelection(beforeViewList.size());
         }
-        backButton.setOnClickListener(this);
-        //listView.setEnabled(false);
     }
-
-
     private String getTextIndex(int j){
         String[] indexString = new String[]{"先発", "次発", "次々発"};
         if(j < 3) {
