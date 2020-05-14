@@ -9,6 +9,16 @@ public class CustomListData
     private String listTextTrainType;
     private String listTextDest;
 
+    public int getListTextColor() {
+        return listTextColor;
+    }
+
+    public void setListTextColor(int listTextColor) {
+        this.listTextColor = listTextColor;
+    }
+
+    private int listTextColor;
+
     public String getListTextIndex() {
         return listTextIndex;
     }

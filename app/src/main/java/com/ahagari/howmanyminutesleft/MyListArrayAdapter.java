@@ -48,15 +48,15 @@ public class MyListArrayAdapter extends ArrayAdapter<CustomListData> {
         // 表示用のリストに値を設定
         TextView textIndex = view.findViewById(R.id.listTextIndex);
         textIndex.setText(item.getListTextIndex());
-        textIndex.setTextColor(Color.RED);
+        textIndex.setTextColor(Color.WHITE);
 
         TextView countTime = view.findViewById(R.id.listTextCountTime);
         countTime.setText(item.getListTextCountTime());
-        countTime.setTextColor(Color.WHITE);
+        countTime.setTextColor(item.getListTextColor());
 
         TextView trainType = view.findViewById(R.id.listTextTrainType);
         trainType.setText(item.getListTextTrainType());
-        trainType.setTextColor(Color.MAGENTA);
+        trainType.setTextColor(Color.WHITE);
 
         TextView trainTime = view.findViewById(R.id.listTextTime);
         trainTime.setText(item.getListTextTime());
