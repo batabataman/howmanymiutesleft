@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">DialogTest</string>
+    <string name="pick_color">Pick Color</string>
+</resources>
